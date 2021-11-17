@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-import 'dog_model.dart';
-import 'dog_list.dart';
-import 'new_dog_form.dart';
+import 'player_model.dart';
+import 'player_list.dart';
+import 'player_form.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,10 +10,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'We Rate Dogs',
+      title: 'We Rate Football Players',
       theme: ThemeData(brightness: Brightness.dark),
       home: MyHomePage(
-        title: 'We Rate Dogs',
+        title: 'We Rate Football Players',
       ),
     );
   }
@@ -29,22 +28,31 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Dog> initialDoggos = []
-    ..add(Dog('Ruby', 'Portland, OR, USA',
-        'Ruby is a very good girl. Yes: Fetch, loungin\'. No: Dogs who get on furniture.'))
-    ..add(Dog('Rex', 'Seattle, WA, USA', 'Best in Show 1999'))
-    ..add(Dog('Rod Stewart', 'Prague, CZ',
-        'Star good boy on international snooze team.'))
-    ..add(Dog('Herbert', 'Dallas, TX, USA', 'A Very Good Boy'))
-    ..add(Dog('Buddy', 'North Pole, Earth', 'Self proclaimed human lover.'));
+  List<Player> initialplayers = [];
+  Player player = new Player("","","","");
 
-  Future _showNewDogForm() async {
-    Dog newDog = await Navigator.of(context)
+  @override
+  void initState() {
+    getImageList();
+    super.initState();
+  }
+
+    Future<void> getImageList() async {
+      List<Player> _initialplayers = [];
+      _initialplayers = await player.getImageUrl();
+      setState(()  {
+        initialplayers = _initialplayers;
+      });
+    }
+
+
+  Future _showNewplayerForm() async {
+    Player newplayer = await Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {
-      return AddDogFormPage();
+      return AddplayerFormPage();
     }));
-    if (newDog != null) {
-      initialDoggos.add(newDog);
+    if (newplayer != null) {
+     initialplayers.add(newplayer);
     }
   }
 
@@ -55,11 +63,11 @@ class _MyHomePageState extends State<MyHomePage> {
       key: key,
       appBar: new AppBar(
         title: new Text(widget.title),
-        backgroundColor: Colors.black87,
+        backgroundColor: Colors.black,
         actions: <Widget>[
           new IconButton(
             icon: new Icon(Icons.add),
-            onPressed: _showNewDogForm,
+            onPressed: _showNewplayerForm,
           ),
         ],
       ),
@@ -75,13 +83,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 .9
               ],
                   colors: [
-                Colors.indigo[800],
-                Colors.indigo[700],
-                Colors.indigo[600],
-                Colors.indigo[400]
+                Colors.red,
+                Colors.redAccent,
+                Colors.deepOrange,
+                Colors.deepOrangeAccent
               ])),
           child: new Center(
-            child: new DogList(initialDoggos),
+            child: new playerList(initialplayers),
           )),
     );
   }

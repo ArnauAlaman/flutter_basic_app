@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'dog_model.dart';
+import 'player_model.dart';
 import 'dart:async';
 
-class DogDetailPage extends StatefulWidget {
-  final Dog dog;
-  DogDetailPage(this.dog);
+class playerDetailPage extends StatefulWidget {
+  final Player player;
+  playerDetailPage(this.player);
 
   @override
-  _DogDetailPageState createState() => new _DogDetailPageState();
+  _playerDetailPageState createState() => new _playerDetailPageState();
 }
 
-class _DogDetailPageState extends State<DogDetailPage> {
-  final double dogAvarterSize = 150.0;
+class _playerDetailPageState extends State<playerDetailPage> {
+  final double playerAvarterSize = 150.0;
   double _sliderValue = 10.0;
 
   Widget get addYourRating {
@@ -25,9 +25,9 @@ class _DogDetailPageState extends State<DogDetailPage> {
               new Flexible(
                 flex: 1,
                 child: new Slider(
-                  activeColor: Colors.indigoAccent,
+                  activeColor: Colors.red,
                   min: 0.0,
-                  max: 15.0,
+                  max: 10.0,
                   value: _sliderValue,
                   onChanged: (newRating) {
                     setState(() {
@@ -40,9 +40,9 @@ class _DogDetailPageState extends State<DogDetailPage> {
                 width: 50.0,
                 alignment: Alignment.center,
                 child: new Text('${_sliderValue.toInt()}',
-                    style: Theme.of(context).textTheme.display1),
+                    //style: Theme.of(context).textTheme.display1),
               ),
-            ],
+              )],
           ),
         ),
         submitRatingButton,
@@ -51,11 +51,11 @@ class _DogDetailPageState extends State<DogDetailPage> {
   }
 
   void updateRating() {
-    if (_sliderValue < 10) {
+    if (_sliderValue < 5) {
       _ratingErrorDialog();
     } else {
       setState(() {
-        widget.dog.rating = _sliderValue.toInt();
+        widget.player.rating = _sliderValue.toInt();
       });
     }
   }
@@ -66,7 +66,7 @@ class _DogDetailPageState extends State<DogDetailPage> {
         builder: (BuildContext context) {
           return new AlertDialog(
             title: new Text('Error!'),
-            content: new Text("They're good dogs, Brant."),
+            content: new Text("They're good players, Brant."),
             actions: <Widget>[
               new FlatButton(
                 child: new Text('Try Again'),
@@ -81,16 +81,16 @@ class _DogDetailPageState extends State<DogDetailPage> {
     return new RaisedButton(
       onPressed: () => updateRating(),
       child: new Text('Submit'),
-      color: Colors.indigoAccent,
+      color: Colors.red,
     );
   }
 
-  Widget get dogImage {
+  Widget get playerImage {
     return new Hero(
-      tag: widget.dog,
+      tag: widget.player,
       child: new Container(
-        height: dogAvarterSize,
-        width: dogAvarterSize,
+        height: playerAvarterSize,
+        width: playerAvarterSize,
         constraints: new BoxConstraints(),
         decoration: new BoxDecoration(
             shape: BoxShape.circle,
@@ -113,7 +113,7 @@ class _DogDetailPageState extends State<DogDetailPage> {
             ],
             image: new DecorationImage(
                 fit: BoxFit.cover,
-                image: new NetworkImage(widget.dog.imageUrl ?? ''))),
+                image: new NetworkImage(widget.player.imageUrl ?? ''))),
       ),
     );
   }
@@ -127,14 +127,14 @@ class _DogDetailPageState extends State<DogDetailPage> {
           size: 40.0,
         ),
         new Text(
-          '${widget.dog.rating}/10',
-          style: Theme.of(context).textTheme.display2,
+          '${widget.player.rating}/10',
+          //style: Theme.of(context).textTheme.display2,
         )
       ],
     );
   }
 
-  Widget get dogProfile {
+  Widget get playerProfile {
     return new Container(
       padding: new EdgeInsets.symmetric(vertical: 32.0),
       decoration: new BoxDecoration(
@@ -143,29 +143,25 @@ class _DogDetailPageState extends State<DogDetailPage> {
           end: Alignment.bottomLeft,
           stops: [.1, .5, .7, .9],
           colors: [
-            Colors.indigo[800],
-            Colors.indigo[700],
-            Colors.indigo[600],
-            Colors.indigo[400]
+            Colors.red,
+            Colors.redAccent,
+            Colors.deepOrange,
+            Colors.deepOrangeAccent
           ],
         ),
       ),
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          dogImage,
+          playerImage,
           new Text(
-            '${widget.dog.name}',
+            '${widget.player.name + " " + widget.player.last_name }',
             style: TextStyle(fontSize: 32.0),
-          ),
-          new Text(
-            widget.dog.location,
-            style: TextStyle(fontSize: 20.0),
           ),
           new Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-            child: new Text(widget.dog.description),
+            child: new Text("Date of birth: "+widget.player.date_of_birth),
           ),
           rating
         ],
@@ -179,10 +175,10 @@ class _DogDetailPageState extends State<DogDetailPage> {
       backgroundColor: Colors.black87,
       appBar: new AppBar(
         backgroundColor: Colors.black87,
-        title: new Text('Meet ${widget.dog.name}'),
+        title: new Text('Meet ${widget.player.name} ${widget.player.last_name}'),
       ),
       body: new ListView(
-        children: <Widget>[dogProfile, addYourRating],
+        children: <Widget>[playerProfile, addYourRating],
       ),
     );
   }

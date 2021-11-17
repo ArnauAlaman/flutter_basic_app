@@ -1,30 +1,30 @@
-import 'package:basic_flutter_app/dog_model.dart';
-import 'dog_detail_page.dart';
+import 'package:basic_flutter_app/player_model.dart';
+import 'player_detail_page.dart';
 import 'package:flutter/material.dart';
 
-class DogCard extends StatefulWidget {
-  final Dog dog;
+class playerCard extends StatefulWidget {
+  final Player player;
 
-  DogCard(this.dog);
+  playerCard(this.player);
 
   @override
-  _DogCardState createState() => _DogCardState(dog);
+  _playerCardState createState() => _playerCardState(player);
 }
 
-class _DogCardState extends State<DogCard> {
-  Dog dog;
+class _playerCardState extends State<playerCard> {
+  Player player;
   String renderUrl;
 
-  _DogCardState(this.dog);
+  _playerCardState(this.player);
 
   void initState() {
     super.initState();
-    renderDogPic();
+    renderplayerPic();
   }
 
-  Widget get dogImage {
-    var dogAvatar = new Hero(
-      tag: dog,
+  Widget get playerImage {
+    var playerAvatar = new Hero(
+      tag: player,
       child: new Container(
         width: 100.0,
         height: 100.0,
@@ -46,14 +46,14 @@ class _DogCardState extends State<DogCard> {
               colors: [Colors.black54, Colors.black, Colors.blueGrey[600]])),
       alignment: Alignment.center,
       child: new Text(
-        'DOGGO',
+        'PLAYER',
         textAlign: TextAlign.center,
       ),
     );
 
     var crossFade = new AnimatedCrossFade(
       firstChild: placeholder,
-      secondChild: dogAvatar,
+      secondChild: playerAvatar,
       crossFadeState: renderUrl == null
           ? CrossFadeState.showFirst
           : CrossFadeState.showSecond,
@@ -63,16 +63,16 @@ class _DogCardState extends State<DogCard> {
     return crossFade;
   }
 
-  void renderDogPic() async {
-    await dog.getImageUrl();
+  void renderplayerPic() async {
+    await player.getImageUrl();
     if (mounted) {
       setState(() {
-        renderUrl = dog.imageUrl;
+        renderUrl = player.imageUrl;
       });
     }
   }
 
-  Widget get dogCard {
+  Widget get playerCard {
     return new Positioned(
       right: 0.0,
       child: new Container(
@@ -87,17 +87,17 @@ class _DogCardState extends State<DogCard> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 new Text(
-                  widget.dog.name,
-                  style: Theme.of(context).textTheme.headline,
+                  widget.player.name,
+                  //style: Theme.of(context).textTheme.headline,
                 ),
                 new Text(
-                  widget.dog.location,
-                  style: Theme.of(context).textTheme.subhead,
+                  widget.player.last_name,
+                  //style: Theme.of(context).textTheme.subhead,
                 ),
                 new Row(
                   children: <Widget>[
                     new Icon(Icons.star),
-                    new Text(': ${widget.dog.rating}/10')
+                    new Text(': ${widget.player.rating}/10')
                   ],
                 )
               ],
@@ -108,24 +108,24 @@ class _DogCardState extends State<DogCard> {
     );
   }
 
-  showDogDetailPage() {
+  showplayerDetailPage() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return new DogDetailPage(dog);
+      return new playerDetailPage(player);
     }));
   }
 
   @override
   Widget build(BuildContext context) {
     return new InkWell(
-      onTap: () => showDogDetailPage(),
+      onTap: () => showplayerDetailPage(),
       child: new Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: new Container(
           height: 115.0,
           child: new Stack(
             children: <Widget>[
-              dogCard,
-              new Positioned(top: 7.5, child: dogImage),
+              playerCard,
+              new Positioned(top: 7.5, child: playerImage),
             ],
           ),
         ),
